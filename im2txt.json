@@ -1,0 +1,7 @@
+{
+  "name": "im2txt",
+  "description": "im2txt image processing binary",
+  "path": "/home/nihliphobe/im2txt/bazel-bin/im2txt/go.sh",
+  "type": "stdio",
+  "allowed_extensions": [ "kalt@maxfieldchen.com" ]
+}
