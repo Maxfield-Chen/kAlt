@@ -31,11 +31,14 @@ def send_message(encoded_message):
     sys.stdout.buffer.flush()
 
 def get_alt(url):
-    process = subprocess.run(["docker", "run", "caption", "-e", "image_URL=" + url], stdout=subprocess.PIPE, encoding='utf-8')
+    process = subprocess.run(["docker", "run", "-e", "kalt=" + url, "caption"], stdout=subprocess.PIPE, encoding='utf-8')
     output = process.stdout
     start_offset = output.find('0)')
     end_offset = output.find('(p')
-    return (output[start_offset + 2:end_offset - 2])
+    output = output[start_offset + 2:end_offset - 2]
+    if "\'a\'" in output:
+        return "Unable to parse image."
+    return output
 
 while True:
     url = get_message()
