@@ -5,14 +5,6 @@ import struct
 import subprocess
 from subprocess import Popen
 
-input_file = "toParse.jpeg"
-home = "/home/nihliphobe/"
-im2txt_path = home + "im2txt/"
-checkpoint_path = im2txt_path + "im2txt/model/Hugh/train/newmodel.ckpt-2000000"
-vocab_path = im2txt_path + "im2txt/data/Hugh/word_counts.txt"
-input_path = im2txt_path + "im2txt/data/images/"
-binary_path = im2txt_path + "bazel-bin/im2txt/run_inference"
-
 # Read a message from stdin and decode it.
 def get_message():
     raw_length = sys.stdin.buffer.read(4)
@@ -38,8 +30,8 @@ def send_message(encoded_message):
     sys.stdout.buffer.write(encoded_message['content'])
     sys.stdout.buffer.flush()
 
-def get_alt(file_name):
-    process = subprocess.run([binary_path, "--checkpoint_path=" + checkpoint_path, "--vocab_file=" + vocab_path, "--input_files=" + input_path + file_name], stdout=subprocess.PIPE, encoding='utf-8')
+def get_alt(url):
+    process = subprocess.run(["docker", "run", "caption", "-e", "image_URL=" + url], stdout=subprocess.PIPE, encoding='utf-8')
     output = process.stdout
     start_offset = output.find('0)')
     end_offset = output.find('(p')
@@ -47,6 +39,5 @@ def get_alt(file_name):
 
 while True:
     url = get_message()
-    process = subprocess.run(["wget", url, "-O", input_path + input_file])
-    captions = get_alt(input_file)
+    captions = get_alt(url)
     send_message(encode_message(captions))

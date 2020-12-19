@@ -27,7 +27,6 @@ browser.contextMenus.create({
   documentUrlPatterns: ["*://*/*"],
   contexts: ["image"],
   onclick(info, tab) {
-    console.log("Sending request to content: " + info);
     var message = info.srcUrl;
     var imageLength = message.length;
     browser.notifications.create({
@@ -40,15 +39,6 @@ browser.contextMenus.create({
 
   }
 });
-
-
-
-var home = "/home/nihliphobe/";
-var im2txt_path = home + "im2txt/";
-var checkpoint_path = im2txt_path + "im2txt/model/Hugh/train/newmodel.ckpt-2000000";
-var vocab_path = im2txt_path + "im2txt/data/Hugh/word_counts.txt";
-var input_path = im2txt_path + "im2txt/data/images/";
-var binary_path = im2txt_path + "bazel-bin/im2txt/run_inference";
 
 
 function caption(url) {
