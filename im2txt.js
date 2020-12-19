@@ -1,16 +1,16 @@
 // debug
-alert("Open the debug console!");
+// alert("Open the debug console!");
 
 
 function onResponse(response) {
   console.log("Received " + response);
-  browser.notifications.create({
+    browser.notifications.create("kalt", {
     "type": "basic",
     "iconUrl": browser.extension.getURL("link.png"),
     "title": "Generated Alt-Text",
     "message": response
   });
-  // Add copying of the best choice when clicking on the notification.
+  // Copying of the best choice when clicking on the notification.
   browser.notifications.onClicked.addListener(() => navigator.clipboard.writeText(response));
 }
 
@@ -29,11 +29,11 @@ browser.contextMenus.create({
   onclick(info, tab) {
     var message = info.srcUrl;
     var imageLength = message.length;
-    browser.notifications.create({
+    browser.notifications.create("kalt", {
         "type": "basic",
         "iconUrl": browser.extension.getURL("link.png"),
-        "title": "Generating K Alt Text For: " + "..." + message.slice(imageLength - 10, imageLength),
-        "message": message
+        "title": "Generating K Alt Text",
+        "message": "Generating K Alt Text For: " + "..." + message.slice(imageLength - 15, imageLength)
     });
     captions = caption(message);
 
