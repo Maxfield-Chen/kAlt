@@ -5,21 +5,21 @@
 # it, then you'll have a lot of paths to update. Your call.
 if ! hash docker &> /dev/null
 then
-    echo "Looks like you don't have docker, but that's no problem friend, I'll just go ahead and grab it for you. My treat, I insist."
+    printf "Looks like you don't have docker, but that's no problem friend, I'll just go ahead and grab it for you. My treat, I insist."
     wget -O - https://get.docker.com/ | bash
 fi
 
-if ! hash python &> /dev/null
+if ! hash python3 &> /dev/null
 then
-    echo "You don't seem to have python installed there partner. Go take a gander around https://www.python.org/. Now you come back real soon, you hear?"
+    printf "You don't seem to have python3 installed there partner. Go take a gander around https://www.python.org/. \n Now you come back real soon, you hear?"
     exit -1
 fi
 
 function getModel () {
-    echo "Fetching us a prebuilt model so we don't have to sit on our butts."
-    echo "That said, it's a quarter gig, so this may take a moment..."
+    printf "Fetching us a prebuilt model so we don't have to sit on our butts."
+    printf "That said, it's a quarter gig, so this may take a moment..."
     wget "https://maxfieldchen.com/raw/im2txt_model_parameters.tar.gz"
-    echo "Done!, hopefully you're still with me."
+    printf "Done!, hopefully you're still with me."
 }
 
 # If the model is not already here, download it.
@@ -27,10 +27,10 @@ function getModel () {
 
 # Builds docker image / container
 
-echo "Building the AI jail now..."
+printf "Building the AI jail now..."
 docker build . -t kalt && \
 docker build ./containers/ -t caption
-echo "AI's are secure. Probably."
+printf "AI's are secure. Probably."
 
 # Linux by default, how about that...
 nativeManifestPath='/usr/lib/mozilla/native-messaging-hosts/'
@@ -51,6 +51,6 @@ cp ./run_inference_wrapper.py $nativeManifestPath
 python -c "import sys; lines = sys.stdin.read(); print lines.replace('FIXME', \"$nativeManifestPath/go.sh\")" < im2txt.json > "$nativeManifestPath$manifestName"
 
 
-echo "Install The manifest.json File In This Here Folder Right To Your Darn Did Browser."
+printf "Install The manifest.json File In This Here Folder Right To Your Darn Did Browser."
 
 exit 0
